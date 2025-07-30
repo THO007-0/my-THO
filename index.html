@@ -1,22 +1,99 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎓 Certificate Generator</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
-    <div class="video-container">
-        <video autoplay loop muted>
-            <source src="video.mp4" type="video/mp4">
-            เบราว์เซอร์ของคุณไม่รองรับแท็กวิดีโอ
-        </video>
+
+  <div class="container">
+    <h1 class="title">🎓 Certificate Generator</h1>
+
+    <div class="main-content">
+
+      <!-- Left Panel -->
+      <aside class="left-panel">
+
+        <section class="upload-section">
+          <label for="excelFile" class="label">📁 Upload Excel File (.xlsx):</label>
+          <input type="file" id="excelFile" accept=".xlsx" class="input-file" />
+        </section>
+
+        <section class="upload-section">
+          <label for="templateUpload" class="label">🖼️ Upload Template Image:</label>
+          <input type="file" id="templateUpload" accept="image/*" onchange="uploadTemplate(this)" class="input-file" />
+        </section>
+
+        <section class="input-section">
+          <label for="title" class="label">🏷️ Certificate Title:</label>
+          <input type="text" id="title" value="Certificate of Completion" class="input-text" />
+        </section>
+
+        <section class="input-section">
+          <label for="presented" class="label">✍️ Subtitle:</label>
+          <input type="text" id="presented" value="This certificate is presented to" class="input-text" />
+        </section>
+
+        <section class="input-section">
+          <label for="reason" class="label">💬 Description:</label>
+          <textarea id="reason" rows="2" class="input-textarea">For outstanding performance</textarea>
+        </section>
+
+        <section class="input-section">
+          <label for="sheetUrl" class="label">🔗 Google Sheets URL:</label>
+          <input type="text" id="sheetUrl" placeholder="URL ที่แชร์แบบ public" class="input-text" />
+          <button class="btn" onclick="loadFromSheet()">โหลดชื่อจาก Google Sheets</button>
+        </section>
+
+        <section class="input-section">
+          <label for="fileType" class="label">📄 Download as:</label>
+          <select id="fileType" class="input-select">
+            <option value="pdf">PDF</option>
+            <option value="jpg">JPG</option>
+          </select>
+        </section>
+
+        <section class="button-group">
+          <button class="btn" onclick="prevName()">← Prev</button>
+          <button class="btn" onclick="nextName()">Next →</button>
+          <button class="btn primary" onclick="downloadCertificate()">📥 Download</button>
+          <button class="btn primary" onclick="downloadAll()">📦 Download All</button>
+          <button class="btn" onclick="window.location.reload(true)">🔄 Refresh</button>
+        </section>a
+
+        <p class="page-info">Showing: <span id="pageNum">1 / 1</span></p>
+
+        <section class="template-selector">
+          <label class="label">📌 เลือกเทมเพลตพื้นหลัง:</label>
+          <div class="template-thumbnails">
+            <img src="hakiri.jpg" alt="Template 1" class="template-thumbnail selected" onclick="selectTemplate(this, 'hakiri.jpg')" />
+            <img src="template2.jpg" alt="Template 2" class="template-thumbnail" onclick="selectTemplate(this, 'template2.jpg')" />
+          </div>
+        </section>
+
+      </aside>
+
+      <!-- Right Panel -->
+      <main class="right-panel">
+        <div id="certificatePreview">
+  <img id="templateImg" src="hakiri.jpg" style="width: 100%; height: 100%; position: absolute; z-index: 0;" />
+  
+  <div id="titleText" class="cert-text" style="z-index: 1;">Certificate of Completion</div>
+  <div id="presentedText" class="cert-text" style="z-index: 1;">This certificate is presented to</div>
+  <div id="nameText" class="cert-text" style="z-index: 1;">Your Name</div>
+  <div id="reasonText" class="cert-text" style="z-index: 1;">For outstanding performance</div>
+          </div>
+        </div>
+      </main>
+
     </div>
-    <div class="content">
-        <h1>ควย 😘</h1>
-        <p></p>
-    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
-
